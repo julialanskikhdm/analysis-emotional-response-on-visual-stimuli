@@ -1,0 +1,33 @@
+import tensorflow as tf
+print(tf.__version__)
+import tensorflow.keras as keras
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.models import Sequential,Model
+from tensorflow.keras.layers import Dense, Dropout, Flatten, Reshape,AveragePooling2D, SeparableConv2D,Conv2D, MaxPooling2D
+from tensorflow.keras import backend as K
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+from tensorflow.keras.applications import ResNet50
+
+INPUT_SHAPE=224
+net_model=resnet50
+net_model_class=net_model.ResNet50
+
+model = net_model_class(weights='imagenet', input_shape=(INPUT_SHAPE,INPUT_SHAPE,3))
+
+for img_path in fnames:
+  img = image.load_img(img_path, target_size=(INPUT_SHAPE, INPUT_SHAPE))
+  x = image.img_to_array(img)
+  x = np.expand_dims(x, axis=0)
+  x = net_model.preprocess_input(x)
+
+  preds = model.predict(x)
+  # decode the results into a list of tuples (class, description, probability)
+  # (one such list for each sample in the batch)
+  print('Predicted:', net_model.decode_predictions(preds, top=3)[0])
+
+  preds = model.predict(x)
+  # decode the results into a list of tuples (class, description, probability)
+  # (one such list for each sample in the batch)
+  print('Predicted:', net_model.decode_predictions(preds, top=3)[0])
